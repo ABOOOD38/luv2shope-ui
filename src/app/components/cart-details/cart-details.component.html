@@ -1,0 +1,67 @@
+<div
+  *ngIf="cartItems.length == 0"
+  class="font-bold text-lg bg-slate-300 border-l-4 border-slate-800 text-slate-800 p-4 w-full mt-5 ml-5"
+  role="alert"
+>
+  <p>Empty shopping cart ):</p>
+</div>
+
+<div *ngIf="cartItems.length > 0" class="container mx-auto mt-10 flex flex-col">
+  <div
+    class="flex justify-between bg-slate-800 py-2 px-2 border-y-2 border-gray-900 text-white"
+  >
+    <p class="basis-1/4 text-center">Product Image</p>
+    <p class="basis-1/2 text-center">Product Details</p>
+    <p class="basis-1/4 text-center">Quantity & Subtotal</p>
+  </div>
+  <div
+    *ngFor="let item of cartItems"
+    class="odd:bg-slate-200 even:bg-slate-300 flex justify-between items-center"
+  >
+    <div class="basis-1/4">
+      <img
+        class="w-52 h-40 mx-auto"
+        src="{{ item.imageUrl }}"
+        alt="{{ item.name }} book"
+      />
+    </div>
+    <div class="basis-1/2 text-center">
+      <p>Name: {{ item.name }}</p>
+      <p>Unitprice:{{ item.unitPrice | currency : "USD" }}</p>
+    </div>
+    <div class="basis-1/4 text-center">
+      <p>Quantity:</p>
+      <button (click)="incrementQuantity(item)">
+        <i
+          class="p-2 fa fa-plus bg-gray-700 my-2 text-white rounded-sm hover:bg-gray-500"
+        ></i>
+      </button>
+      <span class="mx-3">{{ item.quantity }}</span>
+      <button (click)="decrementQuantity(item)">
+        <i
+          class="p-2 fa fa-minus bg-gray-700 my-2 text-white rounded-sm hover:bg-gray-600"
+        ></i>
+      </button>
+      <button
+        (click)="removeItem(item)"
+        class="bg-gray-700 text-white rounded-sm hover:bg-gray-600 ml-2"
+      >
+        <i class="fa fa-remove p-2"></i>
+      </button>
+      <p>Subtotal: {{ item.quantity * item.unitPrice | currency : "USD" }}</p>
+    </div>
+  </div>
+  <hr class="border-l-4 border-slate-800" />
+  <div
+    class="flex flex-col items-center bg-slate-800 text-white text-base font-bold mt-5 py-2"
+  >
+    <div>
+      <p class="text-left">Total Quantity: {{ totalQuantity }}</p>
+      <p class="text-left my-2">Shipping: FREE</p>
+      <p class="text-left">Total Price: {{ totalPrice | currency : "USD" }}</p>
+      <button class="bg-gray-700 rounded-sm" routerLink="/checkout">
+        Checkout
+      </button>
+    </div>
+  </div>
+</div>

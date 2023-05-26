@@ -1,0 +1,15 @@
+<div class="flex place-content-between">
+  <input
+    #search
+    type="text"
+    placeholder="search for products ..."
+    class="w-[15rem] pl-3 h-11 ml-10 mr-2 xl:w-[20rem] 2xl:w-[30rem] rounded-full transition-all hover:bg-slate-200"
+    (keyup.enter)="doSearch(search.value)"
+  />
+  <button
+    (click)="doSearch(search.value)"
+    class="py-2 px-4 border border-solid rounded-full bg-slate-700 text-white font-bold border-t-white hover:bg-slate-950"
+  >
+    search
+  </button>
+</div>

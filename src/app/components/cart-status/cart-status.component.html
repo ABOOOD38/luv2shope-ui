@@ -1,0 +1,18 @@
+<div class="flex items-center">
+  <a routerLink="/cart-details">
+    <div
+      class="bg-slate-700 border border-solid rounded-r-lg mr-4 py-1 pl-2 text-white font-medium"
+    >
+      {{ totalPrice | currency : "USD" }}
+      <span class="bg-white rounded-r-lg py-2 px-2 text-black font-medium">{{
+        totalQuantity
+      }}</span>
+    </div>
+  </a>
+  <a routerLink="/cart-details">
+    <i
+      class="fa-sharp fa-solid fa-cart-shopping fa-lg text-white mr-5"
+      aria-hidden="true"
+    ></i>
+  </a>
+</div>

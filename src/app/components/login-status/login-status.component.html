@@ -1,0 +1,36 @@
+<div class="flex justify-center items-center text-white">
+  <div class="mr-2" *ngIf="isAuthenticated && userFullName">
+    Welcome back {{ userFullName }}!
+  </div>
+
+  <button
+    *ngIf="!isAuthenticated"
+    routerLink="/login"
+    class="py-2 px-4 border border-solid rounded-full bg-slate-700 text-white font-bold border-t-white hover:bg-slate-950"
+  >
+    Login
+  </button>
+
+  <button
+    *ngIf="isAuthenticated"
+    (click)="logout()"
+    class="py-2 px-4 border border-solid rounded-full bg-slate-700 text-white font-bold border-t-white hover:bg-slate-950"
+  >
+    Logout
+  </button>
+
+  <button
+    *ngIf="isAuthenticated"
+    routerLink="/members"
+    class="ml-1 py-2 px-4 border border-solid rounded-full bg-slate-700 text-white font-bold border-t-white hover:bg-slate-950"
+  >
+    Member
+  </button>
+  <button
+    *ngIf="isAuthenticated"
+    routerLink="/order-history"
+    class="ml-1 py-2 px-4 border border-solid rounded-full bg-slate-700 text-white font-bold border-t-white hover:bg-slate-950"
+  >
+    Orders
+  </button>
+</div>

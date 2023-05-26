@@ -1,0 +1,35 @@
+<div
+  *ngIf="orderHistoryList.length == 0"
+  class="font-bold text-lg bg-slate-300 border-l-4 border-slate-800 text-slate-800 p-4 w-full mt-5 ml-5"
+  role="alert"
+>
+  <p>No Orders Found ):</p>
+</div>
+
+<div class="container mx-auto mt-5">
+  <h3 class="text-gray-900 text-xl font-bold mb-3">Your Orders</h3>
+  <div *ngIf="orderHistoryList.length > 0">
+    <table class="border-l-gray-900 shadow-md">
+      <tr class="text-white bg-slate-700">
+        <th class="w-1/5 p-2 text-center">Order Tracking Number</th>
+        <th class="w-1/12 border-x-gray-900 text-center">Total Price</th>
+        <th class="w-1/12 border-x-gray-900 text-center">Total Quantity</th>
+        <th class="w-1/12 border-r-gray-900 text-center">Ordered Date</th>
+      </tr>
+
+      <tr
+        class="text-gray-800 odd:bg-slate-200 even:bg-slate-300"
+        *ngFor="let orderHistory of orderHistoryList"
+      >
+        <td class="text-center">{{ orderHistory.orderTrackingNumber }}</td>
+        <td class="text-center">
+          {{ orderHistory.totalPrice | currency : "USD" }}
+        </td>
+        <td class="text-center">{{ orderHistory.totalQuantity }}</td>
+        <td class="text-center">
+          {{ orderHistory.dateCreated | date : "medium" }}
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

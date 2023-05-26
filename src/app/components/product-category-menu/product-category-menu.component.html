@@ -1,0 +1,12 @@
+<nav>
+  <ul class="flex flex-col items-start gap-2 shadow-inner py-12 pl-12">
+    <li *ngFor="let category of productCategories">
+      <a
+        class="text-gray-800 hover:text-gray-950"
+        routerLink="/category/{{ category.id }}"
+        routerLinkActive="font-bold"
+        >{{ category.categoryName }}</a
+      >
+    </li>
+  </ul>
+</nav>

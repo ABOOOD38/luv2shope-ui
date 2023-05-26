@@ -1,0 +1,62 @@
+<div class="flex flex-wrap gap-x-16 gap-y-16 mt-12 justify-center pb-12">
+  <div *ngFor="let product of products">
+    <div
+      class="flex flex-col bg-white shadow-xl rounded-md w-80 items-center hover:bg-red-50"
+    >
+      <a routerLink="/products/{{ product.id }}">
+        <img class="w-60 h-52" src="{{ product.imageUrl }}" alt="book image" />
+      </a>
+      <a routerLink="/products/{{ product.id }}">
+        <p class="font-bold text-md-center text-gray-800">
+          {{ product.name }}
+          <span>
+            <hr class="border-gray-400" />
+          </span>
+        </p>
+      </a>
+      <div class="mb-4 mt-3">
+        <p class="font-semibold text-lg text-gray-800 mb-2 text-center">
+          {{ product.unitPrice | currency : "USD" }}
+        </p>
+        <button
+          (click)="addToCart(product)"
+          class="px-3 py-2 bg-gray-800 rounded-md text-white hover:bg-gray-700"
+        >
+          Add to cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="products?.length == 0"
+    class="font-bold text-lg bg-slate-300 border-l-4 border-slate-800 text-slate-800 p-4 w-full"
+    role="alert"
+  >
+    <p>No products found ):</p>
+  </div>
+</div>
+<div class="flex items-center justify-center space-x-5">
+  <ngb-pagination
+    [(page)]="pageNumber"
+    [pageSize]="pageSize"
+    [collectionSize]="totalElements"
+    [maxSize]="5"
+    [boundaryLinks]="true"
+    (pageChange)="listProducts()"
+  >
+  </ngb-pagination>
+  <div>
+    <span class="font-bold text-gray-950">Page Size</span>
+    <select
+      #pageSelector
+      (change)="updatePageSize(pageSelector.value)"
+      class="bg-white border rounded-lg ml-1 p-2"
+    >
+      <option selected="true">5</option>
+      <option>10</option>
+      <option>20</option>
+      <option>50</option>
+    </select>
+  </div>
+</div>

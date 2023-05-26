@@ -1,0 +1,465 @@
+<form
+  class="grid gap-4 mx-auto max-w-5xl bg-slate-300 text-center mt-5 shadow rounded-md"
+  [formGroup]="checkoutFormGroup"
+  (ngSubmit)="onSubmit()"
+>
+  <!-- Customer form -->
+  <div
+    class="flex flex-col justify-start gap-2 pl-2 mt-3 border-x-2 pr-2"
+    formGroupName="customer"
+  >
+    <div class="justify-self-center font-bold text-gray-800">Customer</div>
+    <div class="flex justify-between">
+      <label class="">First Name:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+      >
+        <div
+          *ngIf="
+            (firstName?.errors)!['required'] ||
+            (firstName?.errors)!['notOnlyWhitespace']
+          "
+        >
+          First Name is required
+        </div>
+
+        <div *ngIf="(firstName?.errors)!['minlength']">
+          First Name must be at least 2 characters long
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="firstName" />
+    </div>
+    <div class="flex justify-between">
+      <label class="">Last Name:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+      >
+        <div
+          *ngIf="
+            (lastName?.errors)!['required'] ||
+            (firstName?.errors)!['notOnlyWhitespace']
+          "
+        >
+          Last Name is required
+        </div>
+        <div *ngIf="(lastName?.errors)!['minlength']">
+          Last Name must be at least 2 characters long
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="lastName" />
+    </div>
+    <div class="flex justify-between">
+      <label class="">Email:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+      >
+        <div *ngIf="(email?.errors)!['required']">email is required</div>
+
+        <div *ngIf="(email?.errors)!['pattern']">
+          Email must be a valid email address format
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="email" />
+    </div>
+  </div>
+  <hr />
+
+  <!-- shipping address form -->
+  <div
+    class="flex flex-col justify-start gap-2 pl-2 border-x-2 pr-2"
+    formGroupName="shippingAddress"
+  >
+    <div class="justify-self-center font-bold text-gray-800">
+      Shipping Address
+    </div>
+
+    <div class="flex justify-between">
+      <label class="">Country:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          shippingAddressCountry?.invalid &&
+          (shippingAddressCountry?.dirty || shippingAddressCountry?.touched)
+        "
+      >
+        <div *ngIf="(shippingAddressCountry?.errors)!['required']">
+          Country is required
+        </div>
+      </div>
+      <select
+        class="w-72 rounded-lg"
+        type="text"
+        formControlName="country"
+        (change)="getStates('shippingAddress')"
+      >
+        <option *ngFor="let country of countries" [ngValue]="country">
+          {{ country.name }}
+        </option>
+      </select>
+    </div>
+    <div class="flex justify-between">
+      <label class="">Street:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          shippingAddressCity?.invalid &&
+          (shippingAddressCity?.dirty || shippingAddressCity?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (shippingAddressCity?.errors)!['required'] ||
+            (shippingAddressCity?.errors)!['notOnlyWhitespace']
+          "
+        >
+          Street is required
+        </div>
+        <div *ngIf="(shippingAddressCity?.errors)!['minlength']">
+          At least 2 characters are required
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="street" />
+    </div>
+    <div class="flex justify-between">
+      <label class="">City:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          shippingAddressCity?.invalid &&
+          (shippingAddressCity?.dirty || shippingAddressCity?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (shippingAddressCity?.errors)!['required'] ||
+            (shippingAddressCity?.errors)!['notOnlyWhitespace']
+          "
+        >
+          City is required
+        </div>
+        <div *ngIf="(shippingAddressCity?.errors)!['minlength']">
+          At least 2 characters are required
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="city" />
+    </div>
+    <div class="flex justify-between">
+      <label class="">States:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          shippingAddressState?.invalid &&
+          (shippingAddressState?.dirty || shippingAddressState?.touched)
+        "
+      >
+        <div *ngIf="(shippingAddressState?.errors)!['required']">
+          State is required
+        </div>
+      </div>
+      <select class="w-72 rounded-lg" type="text" formControlName="state">
+        <option *ngFor="let state of shippingAddressStates" [ngValue]="state">
+          {{ state.name }}
+        </option>
+      </select>
+    </div>
+    <div class="flex justify-between">
+      <label class="">ZipCode:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          shippingAddressZipCode?.invalid &&
+          (shippingAddressZipCode?.dirty || shippingAddressZipCode?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (shippingAddressZipCode?.errors)!['required'] ||
+            (shippingAddressZipCode?.errors)!['notOnlyWhitespace']
+          "
+        >
+          ZipCode is required
+        </div>
+        <div *ngIf="(shippingAddressZipCode?.errors)!['minlength']">
+          At least 2 characters are required
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="zipCode" />
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- billing address form -->
+  <div
+    class="flex flex-col justify-start gap-2 pl-2 border-x-2 pr-2"
+    formGroupName="billingAddress"
+  >
+    <div class="justify-self-center font-bold text-gray-800">
+      Billing Address
+    </div>
+    <div class="justify-self-center font-bold text-gray-800">
+      <input
+        type="checkbox"
+        (change)="copyShippingAddressToBillingAddress($event)"
+      />
+      <label class="ml-2">Billing address same shipping address</label>
+    </div>
+
+    <div class="flex justify-between">
+      <label class="">Country:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          billingAddressCountry?.invalid &&
+          (billingAddressCountry?.dirty || billingAddressCountry?.touched)
+        "
+      >
+        <div *ngIf="(billingAddressCountry?.errors)!['required']">
+          Country is required
+        </div>
+        <div *ngIf="(billingAddressCountry?.errors)!['minlength']">
+          At least 2 characters are required
+        </div>
+      </div>
+      <select
+        class="w-72 rounded-lg"
+        type="text"
+        formControlName="country"
+        (change)="getStates('billingAddress')"
+      >
+        <option *ngFor="let country of countries" [ngValue]="country">
+          {{ country.name }}
+        </option>
+      </select>
+    </div>
+    <div class="flex justify-between">
+      <label class="">Street:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          billingAddressStreet?.invalid &&
+          (billingAddressStreet?.dirty || billingAddressStreet?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (billingAddressStreet?.errors)!['required'] ||
+            (billingAddressStreet?.errors)!['notOnlyWhitespace']
+          "
+        >
+          Street is required
+        </div>
+        <div *ngIf="(billingAddressStreet?.errors)!['minlength']">
+          At least 2 characters are required
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="street" />
+    </div>
+    <div class="flex justify-between">
+      <label>City:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          billingAddressStreet?.invalid &&
+          (billingAddressStreet?.dirty || billingAddressStreet?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (billingAddressStreet?.errors)!['required'] ||
+            (billingAddressStreet?.errors)!['notOnlyWhitespace']
+          "
+        >
+          City is required
+        </div>
+        <div *ngIf="(billingAddressStreet?.errors)!['minlength']">
+          At least 2 characters are required
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="city" />
+    </div>
+    <div class="flex justify-between">
+      <label class="">States:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          billingAddressState?.invalid &&
+          (billingAddressState?.dirty || billingAddressState?.touched)
+        "
+      >
+        <div *ngIf="(billingAddressState?.errors)!['required']">
+          State is required
+        </div>
+      </div>
+      <select class="w-72 rounded-lg" type="text" formControlName="state">
+        <option *ngFor="let state of billingAddressStates" [ngValue]="state">
+          {{ state.name }}
+        </option>
+      </select>
+    </div>
+    <div class="flex justify-between">
+      <label class="">ZipCode:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          billingAddressZipCode?.invalid &&
+          (billingAddressZipCode?.dirty || billingAddressZipCode?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (billingAddressZipCode?.errors)!['required'] ||
+            (billingAddressZipCode?.errors)!['notOnlyWhitespace']
+          "
+        >
+          ZipCode is required
+        </div>
+        <div *ngIf="(billingAddressZipCode?.errors)!['minlength']">
+          At least 2 characters are required
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="zipCode" />
+    </div>
+  </div>
+  <hr />
+
+  <!-- Credit card form -->
+  <div
+    class="flex flex-col justify-start gap-2 pl-2 border-x-2 pr-2"
+    formGroupName="creditCard"
+  >
+    <div class="justify-self-center font-bold text-gray-800">Credit Card</div>
+    <div class="flex justify-between">
+      <label class="">Card Type:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          creditCardType?.invalid &&
+          (creditCardType?.dirty || creditCardType?.touched)
+        "
+      >
+        <div *ngIf="(creditCardType?.errors)!['required']">
+          Credit card type is required
+        </div>
+      </div>
+      <select class="w-72 rounded-lg" type="text" formControlName="cardType">
+        <option>Visa</option>
+        <option>Mastercard</option>
+      </select>
+    </div>
+    <div class="flex justify-between">
+      <label class="">Name on card:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          creditCardNameOnCard?.invalid &&
+          (creditCardNameOnCard?.dirty || creditCardNameOnCard?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (creditCardNameOnCard?.errors)!['required'] ||
+            (creditCardNameOnCard?.errors)!['notOnlyWhitespace']
+          "
+        >
+          Name is required
+        </div>
+        <div *ngIf="(creditCardNameOnCard?.errors)!['minlength']">
+          Name must be at least 2 characters long
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="nameOnCard" />
+    </div>
+    <div class="flex justify-between">
+      <label class="">Card number:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          creditCardNumber?.invalid &&
+          (creditCardNumber?.dirty || creditCardNumber?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (creditCardNumber?.errors)!['required'] ||
+            (creditCardNumber?.errors)!['notOnlyWhitespace']
+          "
+        >
+          Card number is required
+        </div>
+        <div *ngIf="(creditCardNumber?.errors)!['pattern']">
+          Card number must be 16 digits long
+        </div>
+      </div>
+      <input class="w-72 rounded-lg" type="text" formControlName="cardNumber" />
+    </div>
+    <div class="flex justify-between">
+      <label class="">Security code:</label>
+      <div
+        class="text-slate-950 italic font-bold"
+        *ngIf="
+          creditCardSecurityCode?.invalid &&
+          (creditCardSecurityCode?.dirty || creditCardSecurityCode?.touched)
+        "
+      >
+        <div
+          *ngIf="
+            (creditCardSecurityCode?.errors)!['required'] ||
+            (creditCardSecurityCode?.errors)!['notOnlyWhitespace']
+          "
+        >
+          Securit code is required
+        </div>
+        <div *ngIf="(creditCardSecurityCode?.errors)!['pattern']">
+          Securit code must be 3 digits long
+        </div>
+      </div>
+      <input
+        class="w-72 rounded-lg"
+        type="text"
+        formControlName="securityCode"
+      />
+    </div>
+    <div class="flex justify-between">
+      <label>Expiration month:</label>
+      <select
+        class="w-72 rounded-lg"
+        type="text"
+        formControlName="expirationMonth"
+      >
+        <option *ngFor="let month of creditCardMonths">
+          {{ month }}
+        </option>
+      </select>
+    </div>
+    <div class="flex justify-between">
+      <label>Expiration year:</label>
+      <select
+        class="w-72 rounded-lg"
+        type="text"
+        formControlName="expirationYear"
+        (change)="handleMonthsAndYears()"
+      >
+        <option *ngFor="let year of creditCardYears">
+          {{ year }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <hr />
+  <div class="flex flex-col gap-2 justify-center">
+    <p class="font-bold">Review your order</p>
+    <p>Total quantity: {{ totalQuantity }}</p>
+    <p>Shipping: FREE</p>
+    <p>Total price: {{ totalPrice | currency : "USD" }}</p>
+    <button
+      type="submit"
+      class="mt-2 rounded-md px-4 py-2 bg-slate-900 text-gray-100 hover:bg-slate-800"
+    >
+      Purchase
+    </button>
+  </div>
+</form>
