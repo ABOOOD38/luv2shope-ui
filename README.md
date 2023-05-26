@@ -1,6 +1,6 @@
 # Luv2shopeUi
 
-# The design not responsive, This project created in order to learn angular not apply responsive design
+# The design currently not responsive.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.7.
 
